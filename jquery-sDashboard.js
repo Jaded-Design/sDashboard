@@ -73,7 +73,7 @@
 
 			},
 			_getWidgetContentForId : function(id, context) {
-				var widgetData = context.getDashboarData();
+				var widgetData = context.getDashboardData();
 				for (var i = 0; i < widgetData.length; i++) {
 					var widgetObject = widgetData[i];
 					if (widgetObject.widgetId === id) {
@@ -329,7 +329,7 @@
 			},
 
 			//get the wigetDefinitions
-			getDashboarData : function() {
+			getDashboardData : function() {
 				return this.options.dashboardData;
 			},
 			destroy : function() {
