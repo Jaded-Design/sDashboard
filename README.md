@@ -132,7 +132,23 @@ $("#myDashboard").sDashboard({
 });
 ```
 
-##Options
+##Options for dashboard
+
+### dashboardData
+An array of objects, where each object is a widget definition.
+
+### disableSelection
+
+Its an optional parameter, the default value for this property is true, i.e. by default text selection is disabled on all widgets, however if you want to enable text selection, set `disableSelection` to false.
+
+```javascript
+$("#myDashboard").sDashboard({
+	dashboardData : widgetDefinitions,
+	disableSelection : false // enables text selection on all the widgets		
+});
+```
+
+##Options for widget Definitions
 
 Currently while defining the  widget definitions you can use the following options
 

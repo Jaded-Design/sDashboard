@@ -63,8 +63,11 @@
 
 					}
 				});
-				this.element.disableSelection();
-
+				
+				var disableSelection = this.options.hasOwnProperty("disableSelection") ? this.options.disableSelection : true;
+				if(disableSelection){
+					this.element.disableSelection();
+                }
 				//bind events for widgets
 				this._bindEvents();
 
