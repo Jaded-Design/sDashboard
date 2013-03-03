@@ -144,7 +144,7 @@ Its an optional parameter, the default value for this property is true, i.e. by 
 ```javascript
 $("#myDashboard").sDashboard({
 	dashboardData : widgetDefinitions,
-	disableSelection : false // enables text selection on all the widgets		
+	disableSelection : false // enables text selection on the dashboard		
 });
 ```
 
