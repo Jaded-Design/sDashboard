@@ -246,6 +246,38 @@ NOTE: aaData, aoColumns and sTitle are datatables specific keywords, please refe
 
 ##Methods
 
+### Refresing a widget
+
+To refresh individual widget you need to specify two new properties  to the widget definition
+* `enableRefresh` :   set to true if you want to display refresh button 
+* `refreshCallBack` : call back function that gets called when refresh button is clicked. This function supplies widgetId as an argument
+These options could be specified at the time of creating a dashboard or while adding widget dynamically.
+
+Here is a example code snippet
+
+```javascript
+$("#myDashboard").sDashboard("addWidget", {
+						widgetTitle : "Bar Chart 2",
+						widgetId : "id005",
+						widgetType : "chart",
+						enableRefresh: true, //set the enableRefresh property to true to display a refresh button on the header
+ 						//define a refresh callback function that gets triggered when refresh button is clicked
+ 						refreshCallBack : function(widgetId){ 
+							var refreshedData = {
+								data : myExampleData.constructBarChartData(),
+								options : myExampleData.barChartOptions
+							};
+							return refreshedData;
+						},
+						widgetContent : {
+							data : myExampleData.barChartData,
+							options : myExampleData.barChartOptions
+						}
+					});
+
+```
+You can see the complete example in `ex.html` under `example` folder.
+
 ### Add a Widget
 
 To add a widget simple call the `addWidget` method  and pass in the widget definition that needs to be added.

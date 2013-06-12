@@ -59,8 +59,7 @@ myExampleData.constructBubbleChartData = function() {
 
 		point = [i, Math.ceil(Math.random() * 10), Math.ceil(Math.random() * 10)];
 		d2.push(point);
-	}
-
+	} 
 	return [d1, d2];
 };
 myExampleData.bubbleChartData = myExampleData.constructBubbleChartData();
@@ -154,15 +153,18 @@ myExampleData.lineChartOptions = {
 
 //table Widget sample data and options
 
+myExampleData.constructTableWidgetData = function(){
+	return ["Trident"+Math.ceil(Math.random() * 10), "IE" + Math.ceil(Math.random() * 10), "Win"+Math.ceil(Math.random() * 10)]
+};
+
 myExampleData.tableWidgetData = {
-	"aaData" : [
-	["Trident", "IE4", "Win 95"], 
-	["Trident", "IE5", "Win 95"], 
-	["Trident", "IE6", "Win 95"], 
-	["Trident", "IE7", "Win 98"],
-	["Trident", "IE8", "Win XP"],
-	["Trident", "Chrome1", "OSX"], 
-	["Trident", "Chrome2", "OSX"]
+	"aaData" : [myExampleData.constructTableWidgetData(), 
+	myExampleData.constructTableWidgetData(), 
+	myExampleData.constructTableWidgetData(), 
+	myExampleData.constructTableWidgetData(),
+	myExampleData.constructTableWidgetData(),
+	myExampleData.constructTableWidgetData(), 
+	myExampleData.constructTableWidgetData()
 	],
 
 	"aoColumns" : [{

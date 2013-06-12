@@ -39,11 +39,15 @@
 	cursor: move;
 }
 
+
+
 .sDashboardWidgetHeader .ui-icon {
 	float: right;
-	margin-left: 3px;
+	margin-left: 5px;
 	cursor: default;
+	border: 1px solid #ccc
 }
+
 
 /*dashboard widget content css*/
 .sDashboardWidgetContent {

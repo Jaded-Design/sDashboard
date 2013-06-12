@@ -1,5 +1,5 @@
 /*
- * jquery sDashboard (2.2)
+ * jquery sDashboard (2.5)
  * Copyright 2012, Model N, Inc
  * Distributed under MIT license.
  * https://github.com/ModelN/sDashboard
@@ -16,7 +16,7 @@
 	}(function($, Flotr) {"use strict";
 
 		$.widget("mn.sDashboard", {
-			version : "2.2",
+			version : "2.5",
 			options : {
 				dashboardData : []
 			},
@@ -128,6 +128,23 @@
 						}
 					}
 				});
+				
+				//refresh widget click event handler 
+				this.element.on("click",".sDashboardWidgetHeader span.ui-icon.ui-icon-arrowrefresh-1-e",function(e){
+					var widget = $(e.currentTarget).parents("li:first");
+					var widgetId = widget.attr("id");
+					var widgetDefinition = self._getWidgetContentForId(widgetId, self);
+					var refreshedData = widgetDefinition.refreshCallBack.apply(self,[widgetId]);
+					widgetDefinition.widgetContent = refreshedData;
+					if(widgetDefinition.widgetType === 'chart'){
+						self._renderChart(widgetDefinition);
+					}else if(widgetDefinition.widgetType === 'table'){
+						self._refreshTable(widgetDefinition,widget);
+					}else{
+						self._refreshRegularWidget(widgetDefinition,widget);
+					}
+					
+				});
 
 				//delete widget by clicking the 'x' icon on the widget
 				 this.element.on("click",".sDashboardWidgetHeader span.ui-icon.ui-icon-circle-close",function(e){
@@ -170,11 +187,21 @@
 				//create a widget header
 				var widgetHeader = $("<div/>").addClass("sDashboardWidgetHeader ui-widget-header");
 				var maximizeButton = $('<span title="Maximize" class="ui-icon ui-icon-circle-plus"></span>');
+				
 				var deleteButton = $('<span title="Close" class="ui-icon ui-icon-circle-close"></span>');
-				//add Maximizebutton
-				widgetHeader.append(maximizeButton);
+				
 				//add delete button
 				widgetHeader.append(deleteButton);
+				//add Maximizebutton
+				widgetHeader.append(maximizeButton);
+				
+				if(widgetDefinition.hasOwnProperty("enableRefresh") && widgetDefinition.enableRefresh){
+				var refreshButton = $('<span title="Refresh" class="ui-icon ui-icon-arrowrefresh-1-e"></span>');
+					//add refresh button
+					widgetHeader.append(refreshButton);	
+				}
+				
+				
 				//add widget title
 				widgetHeader.append(widgetDefinition.widgetTitle);
 
@@ -215,7 +242,26 @@
 				//return widget
 				return widget;
 			},
-
+			_refreshRegularWidget : function(widgetDefinition,widget){
+				var isMaximized = widget.find(".sDashboardWidgetContent").hasClass( 'sDashboardWidgetContentMaximized');
+				//first remove the content
+				widget.find('.sDashboardWidgetContent').empty().remove();
+				//then create the content again
+				var widgetContent = $("<div/>").addClass("sDashboardWidgetContent");
+				//if its maximized add the maximized class
+				if(isMaximized){
+					widgetContent.addClass('sDashboardWidgetContentMaximized');				
+				}
+				widgetContent.append(widgetDefinition.widgetContent);
+				//then append this to the widget again;
+				widget.find(".sDashboardWidget").append(widgetContent);
+			},
+			_refreshTable : function(widgetDefinition,widget){
+		         var selectedDataTable = widget.find('table:first').dataTable();
+				 selectedDataTable.fnClearTable();
+				 selectedDataTable.fnAddData(widgetDefinition.widgetContent["aaData"]);
+				
+			},
 			_renderChart : function(widgetDefinition) {
 				var id = "li#" + widgetDefinition.widgetId;
 				var chartArea;
