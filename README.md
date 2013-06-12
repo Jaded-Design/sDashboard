@@ -246,7 +246,7 @@ NOTE: aaData, aoColumns and sTitle are datatables specific keywords, please refe
 
 ##Methods
 
-### Refresing a widget
+### Refreshing a widget
 
 To refresh individual widget you need to specify two new properties  to the widget definition
 
