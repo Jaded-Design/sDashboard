@@ -249,8 +249,11 @@ NOTE: aaData, aoColumns and sTitle are datatables specific keywords, please refe
 ### Refresing a widget
 
 To refresh individual widget you need to specify two new properties  to the widget definition
+
 * `enableRefresh` :   set to true if you want to display refresh button 
+
 * `refreshCallBack` : call back function that gets called when refresh button is clicked. This function supplies widgetId as an argument
+
 These options could be specified at the time of creating a dashboard or while adding widget dynamically.
 
 Here is a example code snippet
