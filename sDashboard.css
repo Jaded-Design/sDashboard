@@ -45,7 +45,10 @@
 	float: right;
 	margin-left: 5px;
 	cursor: default;
-	border: 1px solid #ccc
+	border: 1px solid #ccc;
+}
+.sDashboardWidgetHeader .ui-icon:hover {
+	background-color : #DDD;
 }
 
 
