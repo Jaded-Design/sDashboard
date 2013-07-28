@@ -33,6 +33,15 @@
 			},
 
 			_createView : function() {
+				
+				var docHeight = $(document).height();
+
+				$("body").append("<div class='sDashboard-overlay'></div>");
+
+				$(".sDashboard-overlay").height(docHeight);
+
+				$(".sDashboard-overlay").hide();
+				
 				var _dashboardData = this.options.dashboardData;
 				var i;
 				for ( i = 0; i < _dashboardData.length; i++) {
@@ -63,11 +72,11 @@
 
 					}
 				});
-				
+
 				var disableSelection = this.options.hasOwnProperty("disableSelection") ? this.options.disableSelection : true;
-				if(disableSelection){
+				if (disableSelection) {
 					this.element.disableSelection();
-                }
+				}
 				//bind events for widgets
 				this._bindEvents();
 
@@ -88,7 +97,7 @@
 			_bindEvents : function() {
 				var self = this;
 				//click event for maximize button
-				this.element.on("click",".sDashboardWidgetHeader span.ui-icon.ui-icon-circle-plus",function(e){
+				this.element.on("click", ".sDashboardWidgetHeader div.sDashboard-icon.sDashboard-circle-plus-icon", function(e) {
 
 					//get the widget List Item Dom
 					var widgetListItem = $(e.currentTarget).parents("li:first");
@@ -100,14 +109,16 @@
 					var widgetDefinition = self._getWidgetContentForId(widgetListItem.attr("id"), self);
 
 					//toggle the maximize icon into minimize icon
-					$(e.currentTarget).toggleClass("ui-icon-circle-minus");
+					$(e.currentTarget).toggleClass("sDashboard-circle-minus-icon");
 					//change the tooltip on the maximize/minimize icon buttons
 					if ($(e.currentTarget).attr("title") === "Maximize") {
+						$(".sDashboard-overlay").show();
 						$(e.currentTarget).attr("title", "Minimize");
 						self._trigger("widgetMaximized", null, {
 							"widgetDefinition" : widgetDefinition
 						});
 					} else {
+						$(".sDashboard-overlay").hide();
 						$(e.currentTarget).attr("title", "Maximize");
 						self._trigger("widgetMinimized", null, {
 							"widgetDefinition" : widgetDefinition
@@ -128,36 +139,37 @@
 						}
 					}
 				});
-				
-				//refresh widget click event handler 
-				this.element.on("click",".sDashboardWidgetHeader span.ui-icon.ui-icon-arrowrefresh-1-e",function(e){
+
+				//refresh widget click event handler
+				this.element.on("click", ".sDashboardWidgetHeader div.sDashboard-icon.sDashboard-refresh-icon", function(e) {
 					var widget = $(e.currentTarget).parents("li:first");
 					var widgetId = widget.attr("id");
 					var widgetDefinition = self._getWidgetContentForId(widgetId, self);
-					var refreshedData = widgetDefinition.refreshCallBack.apply(self,[widgetId]);
+					var refreshedData = widgetDefinition.refreshCallBack.apply(self, [widgetId]);
 					widgetDefinition.widgetContent = refreshedData;
-					if(widgetDefinition.widgetType === 'chart'){
+					if (widgetDefinition.widgetType === 'chart') {
 						self._renderChart(widgetDefinition);
-					}else if(widgetDefinition.widgetType === 'table'){
-						self._refreshTable(widgetDefinition,widget);
-					}else{
-						self._refreshRegularWidget(widgetDefinition,widget);
+					} else if (widgetDefinition.widgetType === 'table') {
+						self._refreshTable(widgetDefinition, widget);
+					} else {
+						self._refreshRegularWidget(widgetDefinition, widget);
 					}
-					
+
 				});
 
 				//delete widget by clicking the 'x' icon on the widget
-				 this.element.on("click",".sDashboardWidgetHeader span.ui-icon.ui-icon-circle-close",function(e){
+				this.element.on("click", ".sDashboardWidgetHeader div.sDashboard-icon.sDashboard-circle-remove-icon ", function(e) {
 					var widget = $(e.currentTarget).parents("li:first");
 					var widgetId = widget.attr("id");
 					//show hide effect
 					widget.hide("fold", {}, 300);
 					widget.remove();
 					self._removeWidgetFromWidgetDefinitions(widgetId);
+					$(".sDashboard-overlay").hide();
 				});
 
 				//table row click
-				this.element.on("click",".sDashboardWidgetContent table.sDashboardTableView tbody tr",function(e){
+				this.element.on("click", ".sDashboardWidgetContent table.sDashboardTableView tbody tr", function(e) {
 					var selectedRow = $(e.currentTarget);
 
 					if (selectedRow.length > 0) {
@@ -178,30 +190,28 @@
 			},
 
 			_constructWidget : function(widgetDefinition) {
-
 				//create an outer list item
 				var widget = $("<li/>").attr("id", widgetDefinition.widgetId);
 				//create a widget container
-				var widgetContainer = $("<div/>").addClass("sDashboardWidget ui-widget ui-widget-content ui-helper-clearfix ");
+				var widgetContainer = $("<div/>").addClass("sDashboardWidget");
 
 				//create a widget header
-				var widgetHeader = $("<div/>").addClass("sDashboardWidgetHeader ui-widget-header");
-				var maximizeButton = $('<span title="Maximize" class="ui-icon ui-icon-circle-plus"></span>');
-				
-				var deleteButton = $('<span title="Close" class="ui-icon ui-icon-circle-close"></span>');
-				
+				var widgetHeader = $("<div/>").addClass("sDashboardWidgetHeader sDashboard-clearfix");
+				var maximizeButton = $('<div title="Maximize" class="sDashboard-icon sDashboard-circle-plus-icon "></span>');
+
+				var deleteButton = $('<div title="Close" class="sDashboard-icon sDashboard-circle-remove-icon"></div>');
+
 				//add delete button
 				widgetHeader.append(deleteButton);
 				//add Maximizebutton
 				widgetHeader.append(maximizeButton);
-				
-				if(widgetDefinition.hasOwnProperty("enableRefresh") && widgetDefinition.enableRefresh){
-				var refreshButton = $('<span title="Refresh" class="ui-icon ui-icon-arrowrefresh-1-e"></span>');
+
+				if (widgetDefinition.hasOwnProperty("enableRefresh") && widgetDefinition.enableRefresh) {
+					var refreshButton = $('<div title="Refresh" class="sDashboard-icon sDashboard-refresh-icon "></div>');
 					//add refresh button
-					widgetHeader.append(refreshButton);	
+					widgetHeader.append(refreshButton);
 				}
-				
-				
+	
 				//add widget title
 				widgetHeader.append(widgetDefinition.widgetTitle);
 
@@ -209,7 +219,7 @@
 				var widgetContent = $("<div/>").addClass("sDashboardWidgetContent");
 
 				if (widgetDefinition.widgetType === 'table') {
-					var tableDef = {						
+					var tableDef = {
 						"aaData" : widgetDefinition.widgetContent.aaData,
 						"aoColumns" : widgetDefinition.widgetContent.aoColumns
 					};
@@ -242,25 +252,25 @@
 				//return widget
 				return widget;
 			},
-			_refreshRegularWidget : function(widgetDefinition,widget){
-				var isMaximized = widget.find(".sDashboardWidgetContent").hasClass( 'sDashboardWidgetContentMaximized');
+			_refreshRegularWidget : function(widgetDefinition, widget) {
+				var isMaximized = widget.find(".sDashboardWidgetContent").hasClass('sDashboardWidgetContentMaximized');
 				//first remove the content
 				widget.find('.sDashboardWidgetContent').empty().remove();
 				//then create the content again
 				var widgetContent = $("<div/>").addClass("sDashboardWidgetContent");
 				//if its maximized add the maximized class
-				if(isMaximized){
-					widgetContent.addClass('sDashboardWidgetContentMaximized');				
+				if (isMaximized) {
+					widgetContent.addClass('sDashboardWidgetContentMaximized');
 				}
 				widgetContent.append(widgetDefinition.widgetContent);
 				//then append this to the widget again;
 				widget.find(".sDashboardWidget").append(widgetContent);
 			},
-			_refreshTable : function(widgetDefinition,widget){
-		         var selectedDataTable = widget.find('table:first').dataTable();
-				 selectedDataTable.fnClearTable();
-				 selectedDataTable.fnAddData(widgetDefinition.widgetContent["aaData"]);
-				
+			_refreshTable : function(widgetDefinition, widget) {
+				var selectedDataTable = widget.find('table:first').dataTable();
+				selectedDataTable.fnClearTable();
+				selectedDataTable.fnAddData(widgetDefinition.widgetContent["aaData"]);
+
 			},
 			_renderChart : function(widgetDefinition) {
 				var id = "li#" + widgetDefinition.widgetId;
@@ -382,6 +392,8 @@
 				return this.options.dashboardData;
 			},
 			destroy : function() {
+				//remove the overlay when the dashbaord is destroyed
+				$(".sDashboard-overlay").remove();
 				// call the base destroy function
 				$.Widget.prototype.destroy.call(this);
 			}
