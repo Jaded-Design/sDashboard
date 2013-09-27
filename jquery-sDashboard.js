@@ -47,7 +47,8 @@
 				for ( i = 0; i < _dashboardData.length; i++) {
 					var widget = this._constructWidget(_dashboardData[i]);
 					//append the widget to the dashboard
-					this.element.append(widget);
+					this.element.append(widget);					
+					this._renderTable(_dashboardData[i]);
 					this._renderChart(_dashboardData[i]);
 				}
 
@@ -218,16 +219,8 @@
 				//create a widget content
 				var widgetContent = $("<div/>").addClass("sDashboardWidgetContent");
 
-				if (widgetDefinition.widgetType === 'table') {
-					var tableDef = {
-						"aaData" : widgetDefinition.widgetContent.aaData,
-						"aoColumns" : widgetDefinition.widgetContent.aoColumns
-					};
-					if (widgetDefinition.setJqueryStyle) {
-						tableDef["bJQueryUI"] = true;
-					}
-
-					var dataTable = $('<table cellpadding="0" cellspacing="0" border="0" class="display sDashboardTableView table table-bordered"></table>').dataTable(tableDef);
+				if (widgetDefinition.widgetType === 'table') {					
+					var dataTable = $('<table cellpadding="0" cellspacing="0" border="0" class="display sDashboardTableView table table-bordered"></table>');
 					widgetContent.append(dataTable);
 				} else if (widgetDefinition.widgetType === 'chart') {
 					var chart = $('<div/>').addClass("sDashboardChart");
@@ -270,7 +263,22 @@
 				var selectedDataTable = widget.find('table:first').dataTable();
 				selectedDataTable.fnClearTable();
 				selectedDataTable.fnAddData(widgetDefinition.widgetContent["aaData"]);
+				
+			},
+			_renderTable : function(widgetDefinition){
+				var id = "li#" + widgetDefinition.widgetId;
+				var table
+				if(widgetDefinition.widgetType === 'table'){
+					table = this.element.find(id + " table.sDashboardTableView");
 
+					var tableDef = {};
+					$.extend(tableDef,widgetDefinition.widgetContent);
+					
+					if (widgetDefinition.setJqueryStyle) {
+						tableDef["bJQueryUI"] = true;
+					}
+					table.dataTable(tableDef);
+				}
 			},
 			_renderChart : function(widgetDefinition) {
 				var id = "li#" + widgetDefinition.widgetId;
@@ -369,6 +377,7 @@
 					var widget = this._constructWidget(widgetDefinition);
 					this.element.prepend(widget);
 					this._renderChart(widgetDefinition);
+					this._renderTable(widgetDefinition);
 				}
 			},
 			//remove a widget from the dashboard

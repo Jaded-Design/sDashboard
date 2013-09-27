@@ -99,6 +99,19 @@
 	background-color: #FCEFA1;
 	cursor: pointer;
 }
+
+
+.dataTables_length, 
+.dataTables_info{
+	float:left;
+}
+
+.dataTables_filter,
+.dataTables_paginate{
+	float:right;
+}
+
+
 /*dashboard chart view css*/
 .sDashboardChart {
 	/*	width: 200px;
