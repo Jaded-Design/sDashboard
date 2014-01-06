@@ -33,7 +33,7 @@
 			},
 
 			_createView : function() {
-				
+
 				var docHeight = $(document).height();
 
 				$("body").append("<div class='sDashboard-overlay'></div>");
@@ -41,13 +41,13 @@
 				$(".sDashboard-overlay").height(docHeight);
 
 				$(".sDashboard-overlay").hide();
-				
+
 				var _dashboardData = this.options.dashboardData;
 				var i;
 				for ( i = 0; i < _dashboardData.length; i++) {
 					var widget = this._constructWidget(_dashboardData[i]);
 					//append the widget to the dashboard
-					this.element.append(widget);					
+					this.element.append(widget);
 					this._renderTable(_dashboardData[i]);
 					this._renderChart(_dashboardData[i]);
 				}
@@ -212,14 +212,14 @@
 					//add refresh button
 					widgetHeader.append(refreshButton);
 				}
-	
+
 				//add widget title
 				widgetHeader.append(widgetDefinition.widgetTitle);
 
 				//create a widget content
 				var widgetContent = $("<div/>").addClass("sDashboardWidgetContent");
 
-				if (widgetDefinition.widgetType === 'table') {					
+				if (widgetDefinition.widgetType === 'table') {
 					var dataTable = $('<table cellpadding="0" cellspacing="0" border="0" class="display sDashboardTableView table table-bordered"></table>');
 					widgetContent.append(dataTable);
 				} else if (widgetDefinition.widgetType === 'chart') {
@@ -263,7 +263,7 @@
 				var selectedDataTable = widget.find('table:first').dataTable();
 				selectedDataTable.fnClearTable();
 				selectedDataTable.fnAddData(widgetDefinition.widgetContent["aaData"]);
-				
+
 			},
 			_renderTable : function(widgetDefinition){
 				var id = "li#" + widgetDefinition.widgetId;
@@ -273,7 +273,7 @@
 
 					var tableDef = {};
 					$.extend(tableDef,widgetDefinition.widgetContent);
-					
+
 					if (widgetDefinition.setJqueryStyle) {
 						tableDef["bJQueryUI"] = true;
 					}
@@ -343,6 +343,7 @@
 					var currentWidgetId = widgetDefs[i].widgetId;
 					if (currentWidgetId === widgetId) {
 						widgetDefs.splice(i, 1);
+						this._trigger("widgetremoved");
 						break;
 					}
 				}
@@ -378,6 +379,7 @@
 					this.element.prepend(widget);
 					this._renderChart(widgetDefinition);
 					this._renderTable(widgetDefinition);
+					this._trigger("widgetadded");
 				}
 			},
 			//remove a widget from the dashboard
