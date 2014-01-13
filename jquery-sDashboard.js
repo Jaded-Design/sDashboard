@@ -55,22 +55,22 @@
 				var that = this;
 				//call the jquery ui sortable on the columns
 				this.element.sortable({
+
 					handle : ".sDashboardWidgetHeader",
+					start : function(event, ui) {
+						ui.item.startPosition = ui.item.index();
+					},
 					update : function(event, ui) {
-						var sortOrderArray = $(this).sortable('toArray');
-						var sortedDefinitions = [];
-						for ( i = 0; i < sortOrderArray.length; i++) {
-							var widgetContent = that._getWidgetContentForId(sortOrderArray[i], that);
-							sortedDefinitions.push(widgetContent);
-						}
+						var newPosition = ui.item.index();
+						_dashboardData.splice.apply(
+							_dashboardData,
+							[newPosition, 0].concat(_dashboardData.splice(ui.item.startPosition, 1))
+						);
 
-						if (sortedDefinitions.length > 0) {
-							var evtData = {
-								sortedDefinitions : sortedDefinitions
-							};
-							that._trigger("orderchanged", null, evtData);
-						}
-
+						that._trigger("stateChanged", null, {
+							triggerAction: 'orderChanged',
+							affectedWidget: _dashboardData[newPosition]}
+						);
 					}
 				});
 
@@ -340,10 +340,14 @@
 			_removeWidgetFromWidgetDefinitions : function(widgetId) {
 				var widgetDefs = this.options.dashboardData;
 				for (var i in widgetDefs) {
-					var currentWidgetId = widgetDefs[i].widgetId;
-					if (currentWidgetId === widgetId) {
+					var currentWidget = widgetDefs[i];
+					if (currentWidget.widgetId === widgetId) {
 						widgetDefs.splice(i, 1);
-						this._trigger("widgetremoved");
+						this._trigger("stateChanged", null,  {
+								triggerAction: 'widgetRemoved',
+								affectedWidget: currentWidget
+							}
+						);
 						break;
 					}
 				}
@@ -379,7 +383,11 @@
 					this.element.prepend(widget);
 					this._renderChart(widgetDefinition);
 					this._renderTable(widgetDefinition);
-					this._trigger("widgetadded");
+					this._trigger("stateChanged", null,  {
+							triggerAction: 'widgetAdded',
+							affectedWidget: widgetDefinition
+						}
+					);
 				}
 			},
 			//remove a widget from the dashboard
