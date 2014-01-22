@@ -33,7 +33,7 @@
 			},
 
 			_createView : function() {
-				
+
 				var docHeight = $(document).height();
 
 				$("body").append("<div class='sDashboard-overlay'></div>");
@@ -41,13 +41,13 @@
 				$(".sDashboard-overlay").height(docHeight);
 
 				$(".sDashboard-overlay").hide();
-				
+
 				var _dashboardData = this.options.dashboardData;
 				var i;
 				for ( i = 0; i < _dashboardData.length; i++) {
 					var widget = this._constructWidget(_dashboardData[i]);
 					//append the widget to the dashboard
-					this.element.append(widget);					
+					this.element.append(widget);
 					this._renderTable(_dashboardData[i]);
 					this._renderChart(_dashboardData[i]);
 				}
@@ -56,21 +56,20 @@
 				//call the jquery ui sortable on the columns
 				this.element.sortable({
 					handle : ".sDashboardWidgetHeader",
+					start : function(event, ui) {
+						ui.item.startPosition = ui.item.index();
+					},
 					update : function(event, ui) {
-						var sortOrderArray = $(this).sortable('toArray');
-						var sortedDefinitions = [];
-						for ( i = 0; i < sortOrderArray.length; i++) {
-							var widgetContent = that._getWidgetContentForId(sortOrderArray[i], that);
-							sortedDefinitions.push(widgetContent);
-						}
+						var newPosition = ui.item.index();
+						_dashboardData.splice.apply(
+							_dashboardData,
+							[newPosition, 0].concat(_dashboardData.splice(ui.item.startPosition, 1))
+						);
 
-						if (sortedDefinitions.length > 0) {
-							var evtData = {
-								sortedDefinitions : sortedDefinitions
-							};
-							that._trigger("orderchanged", null, evtData);
-						}
-
+						that._trigger("stateChanged", null, {
+							triggerAction: 'orderChanged',
+							affectedWidget: _dashboardData[newPosition]}
+						);
 					}
 				});
 
@@ -161,12 +160,12 @@
 				//delete widget by clicking the 'x' icon on the widget
 				this.element.on("click", ".sDashboardWidgetHeader div.sDashboard-icon.sDashboard-circle-remove-icon ", function(e) {
 					var widget = $(e.currentTarget).parents("li:first");
-					var widgetId = widget.attr("id");
 					//show hide effect
-					widget.hide("fold", {}, 300);
-					widget.remove();
-					self._removeWidgetFromWidgetDefinitions(widgetId);
-					$(".sDashboard-overlay").hide();
+					widget.hide("fold", {}, 300, function() {
+						self._removeWidgetFromWidgetDefinitions(this.id);
+						this.remove();
+						$(".sDashboard-overlay").hide();
+					});
 				});
 
 				//table row click
@@ -212,14 +211,14 @@
 					//add refresh button
 					widgetHeader.append(refreshButton);
 				}
-	
+
 				//add widget title
 				widgetHeader.append(widgetDefinition.widgetTitle);
 
 				//create a widget content
 				var widgetContent = $("<div/>").addClass("sDashboardWidgetContent");
 
-				if (widgetDefinition.widgetType === 'table') {					
+				if (widgetDefinition.widgetType === 'table') {
 					var dataTable = $('<table cellpadding="0" cellspacing="0" border="0" class="display sDashboardTableView table table-bordered"></table>');
 					widgetContent.append(dataTable);
 				} else if (widgetDefinition.widgetType === 'chart') {
@@ -263,7 +262,7 @@
 				var selectedDataTable = widget.find('table:first').dataTable();
 				selectedDataTable.fnClearTable();
 				selectedDataTable.fnAddData(widgetDefinition.widgetContent["aaData"]);
-				
+
 			},
 			_renderTable : function(widgetDefinition){
 				var id = "li#" + widgetDefinition.widgetId;
@@ -273,7 +272,7 @@
 
 					var tableDef = {};
 					$.extend(tableDef,widgetDefinition.widgetContent);
-					
+
 					if (widgetDefinition.setJqueryStyle) {
 						tableDef["bJQueryUI"] = true;
 					}
@@ -340,9 +339,14 @@
 			_removeWidgetFromWidgetDefinitions : function(widgetId) {
 				var widgetDefs = this.options.dashboardData;
 				for (var i in widgetDefs) {
-					var currentWidgetId = widgetDefs[i].widgetId;
-					if (currentWidgetId === widgetId) {
+					var currentWidget = widgetDefs[i];
+					if (currentWidget.widgetId === widgetId) {
 						widgetDefs.splice(i, 1);
+						this._trigger("stateChanged", null,  {
+								triggerAction: 'widgetRemoved',
+								affectedWidget: currentWidget
+							}
+						);
 						break;
 					}
 				}
@@ -378,6 +382,11 @@
 					this.element.prepend(widget);
 					this._renderChart(widgetDefinition);
 					this._renderTable(widgetDefinition);
+					this._trigger("stateChanged", null,  {
+							triggerAction: 'widgetAdded',
+							affectedWidget: widgetDefinition
+						}
+					);
 				}
 			},
 			//remove a widget from the dashboard
