@@ -55,7 +55,6 @@
 				var that = this;
 				//call the jquery ui sortable on the columns
 				this.element.sortable({
-
 					handle : ".sDashboardWidgetHeader",
 					start : function(event, ui) {
 						ui.item.startPosition = ui.item.index();
@@ -161,12 +160,12 @@
 				//delete widget by clicking the 'x' icon on the widget
 				this.element.on("click", ".sDashboardWidgetHeader div.sDashboard-icon.sDashboard-circle-remove-icon ", function(e) {
 					var widget = $(e.currentTarget).parents("li:first");
-					var widgetId = widget.attr("id");
 					//show hide effect
-					widget.hide("fold", {}, 300);
-					widget.remove();
-					self._removeWidgetFromWidgetDefinitions(widgetId);
-					$(".sDashboard-overlay").hide();
+					widget.hide("fold", {}, 300, function() {
+						self._removeWidgetFromWidgetDefinitions(this.id);
+						this.remove();
+						$(".sDashboard-overlay").hide();
+					});
 				});
 
 				//table row click
