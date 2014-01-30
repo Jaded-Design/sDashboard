@@ -377,7 +377,7 @@
 						times : 3
 					}, 800);
 				} else {
-					this.options.dashboardData.push(widgetDefinition);
+					this.options.dashboardData.unshift(widgetDefinition);
 					var widget = this._constructWidget(widgetDefinition);
 					this.element.prepend(widget);
 					this._renderChart(widgetDefinition);
