@@ -307,11 +307,11 @@ $("#myDashboard").sDashboard("removeWidget", "id7");
 
 ###Get Dashboard Data
 
-To get the array of widget definitions in the current dashboard you can use the `getDashboarData` api 
+To get the array of widget definitions in the current dashboard you can use the `getDashboardData` api 
 
 ```javascript
 
-var arr = $("#myDashboard").sDashboard("getDashbaordData");
+var arr = $("#myDashboard").sDashboard("getDashboardData");
 
 ```
 
