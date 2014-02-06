@@ -15,52 +15,6 @@ sDashboards has built in support for rendering  datatable's and flotr2 charts.  
 view an example at : [Link to example](http://modeln.github.com/sDashboard/example/ex.html)
 
 
-##Features
-
-The current version of the dashboard includes the following features
-
-current 
-
-Current version : V2.2 (aka AMDfying)
-
-* Added support to load the library in an AMD setup.
-* Added an example with bootstrap style. 
-
-
-Previous version's : 
-
-V2.0.1
-
-* Added support for listening to dashboard creation complete event.
-* Added support for listening to widget maximized or widget minimized events.
-
-
-V2.0 (aka Salt&Pepper)
-
-* Full support for all Flort2 charts.
-* Support for chart click and selection
-* Support to listen for widget rearrangement and get the rearranged widget definitions array
-* Improvements to maximize feature on widgets, Widgets can now maximize to full screen
-* Source code for the library reduce by 15% when compared to previous code ( I know this is a show off :D)
-* Re- architectured the way we render charts to support more type of charts instead of sticking to bar, pie and line.
-* Added example to render an existing dom element as a dashboard widget (see the twitter widget on the demo page)
-
-V1.0 
-
-* Drag and rearrange widgets
-* Maximizing & Minimizing a widget
-* Close Widgets
-* Rendering data table with in widget
-* Rendering Bar/Pie/Donut/Line charts (deprecated)
-* Ability to click through table rows
-* Ability to click on chart data
-* Ability to select chart data
-* Adding a  widget dynamically
-* Removing a widget dynamically
-* Jquery UI  themeroller support
-
-
-
 ##Dependencies
 
 sDashboard depends on the following libraries
@@ -461,6 +415,52 @@ Few portions for sDashboard look and feel have been inspired from the following 
 ##Change Log
 
 * Current version V2.0
+
+
+##Features
+
+The current version of the dashboard includes the following features
+
+current 
+
+Current version : V2.2 (aka AMDfying)
+
+* Added support to load the library in an AMD setup.
+* Added an example with bootstrap style. 
+
+
+Previous version's : 
+
+V2.0.1
+
+* Added support for listening to dashboard creation complete event.
+* Added support for listening to widget maximized or widget minimized events.
+
+
+V2.0 (aka Salt&Pepper)
+
+* Full support for all Flort2 charts.
+* Support for chart click and selection
+* Support to listen for widget rearrangement and get the rearranged widget definitions array
+* Improvements to maximize feature on widgets, Widgets can now maximize to full screen
+* Source code for the library reduce by 15% when compared to previous code ( I know this is a show off :D)
+* Re- architectured the way we render charts to support more type of charts instead of sticking to bar, pie and line.
+* Added example to render an existing dom element as a dashboard widget (see the twitter widget on the demo page)
+
+V1.0 
+
+* Drag and rearrange widgets
+* Maximizing & Minimizing a widget
+* Close Widgets
+* Rendering data table with in widget
+* Rendering Bar/Pie/Donut/Line charts (deprecated)
+* Ability to click through table rows
+* Ability to click on chart data
+* Ability to select chart data
+* Adding a  widget dynamically
+* Removing a widget dynamically
+* Jquery UI  themeroller support
+
 
 ##Licence
 
