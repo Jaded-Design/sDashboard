@@ -163,7 +163,7 @@
 					//show hide effect
 					widget.hide("fold", {}, 300, function() {
 						self._removeWidgetFromWidgetDefinitions(this.id);
-						this.remove();
+						$(this).remove();
 						$(".sDashboard-overlay").hide();
 					});
 				});
