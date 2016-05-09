@@ -184,30 +184,6 @@ To refresh individual widget you need to specify two new properties  to the widg
 
 These options could be specified at the time of creating a dashboard or while adding widget dynamically.
 
-Here is a example code snippet
-
-```javascript
-$("#myDashboard").sDashboard("addWidget", {
-						widgetTitle : "Bar Chart 2",
-						widgetId : "id005",
-						widgetType : "chart",
-						enableRefresh: true, //set the enableRefresh property to true to display a refresh button on the header
- 						//define a refresh callback function that gets triggered when refresh button is clicked
- 						refreshCallBack : function(widgetId){ 
-							var refreshedData = {
-								data : myExampleData.constructBarChartData(),
-								options : myExampleData.barChartOptions
-							};
-							return refreshedData;
-						},
-						widgetContent : {
-							data : myExampleData.barChartData,
-							options : myExampleData.barChartOptions
-						}
-					});
-
-```
-You can see the complete example in `ex.html` under `example` folder.
 
 ### Add a Widget
 
@@ -270,38 +246,6 @@ $("#myDashboard").bind("sdashboardrowclicked", function(e, data) {
 
 ```
 
-### Chart Plot Selection
-
-To register for a plot selection event on a chart widget simply set a listener as follows
-
-```javascript
-
-//plot selected event example
-$("#myDashboard").bind("sdashboardplotselected", function(e, data) {
-	alert("plot selected");
-	if (console) {
-		console.log("chart range selected, for widget: " + data.selectedWidgetId);
-	}
-});
-```
-
-### Chart Plot Click 
-
-To register for a plot click event on a chart widget simply set a listener as follows
-
-```javascript
-
-//plot click event example
-$("#myDashboard").bind("sdashboardplotclicked", function(e, data) {
-	alert("plot clicked");
-	if (console) {
-		console.log("chart clicked, for widget: " + data.selectedWidgetId);
-	}
-});
-
-
-```
-
 ###Widgets rearranged
 When widgets are rearranged by dragging around, the sDashboard dispatches a `sdashboardorderchanged` event. The event carries an array of sortedDefinitions which are stored with a key `sortedDefinitions` 
 
@@ -347,17 +291,6 @@ $("#myDashboard").bind("sdashboardwidgetminimized", function(e,data) {
 
 ```
 
-##What's Next
-
-* I am working on implementing features for refreshing individual widgets data and enabling multiple views within a widget, for example, a widget can display a table, bar and pie chart with in it.
-* More documentation and bug fixes :D
-
-##Fun Facts
-* As you have notices V2.0 is a named release called Salt&Pepper. Just like the way salt and pepper add great flavor to your food, this release adds great flavor and taste to the sDashboard framework :D .In all seriousness, I just felt its easy to remember the version with a name rather than a version number.
-
-##Architectural Changes
-
-One of the major change I've made is to replace flot charts with flotr2 library, I ve been researching many charting libraries and I strongly feel that flotr2 is the best charting library in terms of the features and ease of use it provides. Hence I went forward with using this library for sDashboard. 
 
 ##Credits
 
@@ -367,9 +300,6 @@ Special thanks to the following project which are a great source of inspiration 
 
 sDashboard is heavily inspired from flex dashboard framework, more details flex dashboard can be found at:  [link](http://www.adobe.com/devnet/flex/samples/dashboard.html)
 
-###Flotr2 Charts
-
-sDashboard uses Flotr2 charts to render charts within widgets, more details about flotr2 charts can be found at [link](http://www.humblesoftware.com/flotr2/)
 
 ### Datatables
 
@@ -413,7 +343,7 @@ V2.0.1
 
 V2.0 (aka Salt&Pepper)
 
-* Full support for all Flort2 charts.
+* ~~~Full support for all Flort2 charts.~~~
 * Support for chart click and selection
 * Support to listen for widget rearrangement and get the rearranged widget definitions array
 * Improvements to maximize feature on widgets, Widgets can now maximize to full screen
