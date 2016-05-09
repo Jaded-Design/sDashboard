@@ -1,3 +1,6 @@
+<strong>IMPORTANT:</strong><br /> 
+The original sDashboards had built in support for rendering flotr2 charts. In this version there is no dependency on Flotr or it's outdated charts. 
+
 sDashboard
 ==========
 
@@ -7,8 +10,7 @@ A simple &amp; light weight dashboard framework in javascript
 
 sDashboard is a jQuery plugin that converts an array of objects into a dashboard. Each object in the array would be rendered as a dashboard widget that can be rearranged by dragging around.
 
-<strong>IMPORTANT:</strong><br /> 
-The original sDashboards had built in support for rendering flotr2 charts. In this version there is no dependency on Flotr or it's outdated charts. 
+
 
 Please be advised that other than this small change, there won't be active support on this fork unless others want to step up. This fork was made as a convenience to people who want to use sDashboards core functionality without Flotr. 
 
