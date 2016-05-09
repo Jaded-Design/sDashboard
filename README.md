@@ -1,5 +1,5 @@
 <strong>IMPORTANT:</strong><br /> 
-The original sDashboards had built in support for rendering flotr2 charts. In this version there is no dependency on Flotr or it's outdated charts. 
+The original sDashboards had built in support for rendering flotr2 charts. In this version there is no dependency on Flotr.
 
 sDashboard
 ==========
