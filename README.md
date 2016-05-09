@@ -7,7 +7,10 @@ A simple &amp; light weight dashboard framework in javascript
 
 sDashboard is a jQuery plugin that converts an array of objects into a dashboard. Each object in the array would be rendered as a dashboard widget that can be rearranged by dragging around.
 
-sDashboards has built in support for rendering  datatable's and flotr2 charts.  It also has support to listen for events such as table row click, chart data click and data selection built-in.
+IMPORTANT: 
+The original sDashboards had built in support for rendering flotr2 charts. In this version there is no dependency on Flotr or it's outdated charts. 
+
+Please be advised that other than this small change, there won't be active support on this fork unless others want to step up. This fork was made as a convenience to people who want to use sDashboards core functionality without Flotr. 
 
 
 ##Demo
@@ -22,7 +25,7 @@ sDashboard depends on the following libraries
 * Jquery 
 * Jquery UI
 * Datatables (required for table widgets)
-* Flotr2 charts (required for charting widgets)
+* ~~~Flotr2 charts (required for charting widgets)~~~
 
 
 ## How to set up
@@ -46,9 +49,6 @@ To set up a basic dashboard :
 
 	<!-- load datatables library -->
 	<script src="libs/datatables/jquery.dataTables.js"></script>
-
-	<!-- load flot charting library -->
-	<script src="libs/float/jquery.flotr2.min.js" type="text/javascript"></script>
 
 	<!-- load sDashboard library -->
 	<script src="../jquery-sDashboard.js" type="text/javascript"></script>
@@ -115,11 +115,7 @@ Title of the dashboard widget
 A unique id for the dashboard widget
 ###widgetType 
 
-Type of widget, possible values are : `table` , `chart` . When set to table, the widget renders as a data table with default row click event built-in. If its a chart, the widget gets rendered as a flotr2 chart. The chart type depends on the options you pass to the widgetContent.
-
-###getDataBySelection 
-
-Default value is false, when set to true, registers a chart selection event instead of chart click on the flotr2 charts. Generally turn on this setting, if you are using a line chart, for ease of selecting chart data.
+Type of widget, possible values are : `table`. When set to table, the widget renders as a data table with default row click event built-in. 
 
 ###setJqueryStyle
 
@@ -147,31 +143,7 @@ $("#myDashboard").sDashboard("addWidget",{
 	widgetTitle:"Existing Dom example",
 	widgetContent:$("SomeDomElementID Or Class")
 });
-
-
-
 ```
-
-
-* if widgetType is set to `chart`, the `widgetContent` is set as an object with two keys, `data` and `options`, a sample setup looks like
-
-```javascript
-var chartData; //flort2 data
-var charOptions; //flotr2 options
-
-$("#myDashboard").sDashboard("addWidget",{
-     widgetId : "id123",
-     widgetTitle: "Widget Title",
-     widgetType : "chart",
-	 widgetContent : {
-	 data : chartData,
-	 options : chartOptions	
-}
-});
-
-```
-
-NOTE: `chartData` and `chartOptions` should be constructed based on flotr2 documentation, please see the flotr2 documentation for more details on settings can be found on flotr2 documentation page. You can also refer to the demo example of sDashboard.
 
 * if widgetType is set to `table` , it expected to set as : 
 
