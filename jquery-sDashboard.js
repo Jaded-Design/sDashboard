@@ -8,12 +8,12 @@
 ( function(factory) {"use strict";
 		if ( typeof define === 'function' && define.amd) {
 			// Register as an AMD module if available...
-			define(['jquery', 'Flotr'], factory);
+			define(['jquery'], factory);
 		} else {
 			// Browser globals for the unenlightened...
-			factory($, Flotr);
+			factory($);
 		}
-	}(function($, Flotr) {"use strict";
+	}(function($) {"use strict";
 
 		$.widget("mn.sDashboard", {
 			version : "2.5",
@@ -49,7 +49,6 @@
 					//append the widget to the dashboard
 					this.element.append(widget);
 					this._renderTable(_dashboardData[i]);
-					this._renderChart(_dashboardData[i]);
 				}
 
 				var that = this;
@@ -129,15 +128,7 @@
 					widget.toggleClass("sDashboardWidgetContainerMaximized");
 					widgetContainer.toggleClass("sDashboardWidgetContentMaximized ");
 
-					if (widgetDefinition.widgetType === "chart") {
-						var chartArea = widgetContainer.find(" div.sDashboardChart");
-						Flotr.draw(chartArea[0], widgetDefinition.widgetContent.data, widgetDefinition.widgetContent.options);
-						if (!widgetDefinition.getDataBySelection) {
-							//when redrawing the widget, the click event listner is getting destroyed, we need to re-register it here again
-							//need to find out if its a bug on flotr2 library.
-							self._bindChartEvents(chartArea[0], widgetListItem.attr("id"), widgetDefinition, self);
-						}
-					}
+
 				});
 
 				//refresh widget click event handler
@@ -147,9 +138,7 @@
 					var widgetDefinition = self._getWidgetContentForId(widgetId, self);
 					var refreshedData = widgetDefinition.refreshCallBack.apply(self, [widgetId]);
 					widgetDefinition.widgetContent = refreshedData;
-					if (widgetDefinition.widgetType === 'chart') {
-						self._renderChart(widgetDefinition);
-					} else if (widgetDefinition.widgetType === 'table') {
+					if (widgetDefinition.widgetType === 'table') {
 						self._refreshTable(widgetDefinition, widget);
 					} else {
 						self._refreshRegularWidget(widgetDefinition, widget);
@@ -221,14 +210,6 @@
 				if (widgetDefinition.widgetType === 'table') {
 					var dataTable = $('<table cellpadding="0" cellspacing="0" border="0" class="display sDashboardTableView table table-bordered"></table>');
 					widgetContent.append(dataTable);
-				} else if (widgetDefinition.widgetType === 'chart') {
-					var chart = $('<div/>').addClass("sDashboardChart");
-					if (widgetDefinition.getDataBySelection) {
-						chart.addClass("sDashboardChartSelectable");
-					} else {
-						chart.addClass("sDashboardChartClickable");
-					}
-					widgetContent.append(chart);
 				} else {
 					widgetContent.append(widgetDefinition.widgetContent);
 				}
@@ -279,63 +260,6 @@
 					table.dataTable(tableDef);
 				}
 			},
-			_renderChart : function(widgetDefinition) {
-				var id = "li#" + widgetDefinition.widgetId;
-				var chartArea;
-				var data;
-				var options;
-
-				if (widgetDefinition.widgetType === 'chart') {
-					chartArea = this.element.find(id + " div.sDashboardChart");
-					data = widgetDefinition.widgetContent.data;
-					options = widgetDefinition.widgetContent.options;
-					Flotr.draw(chartArea[0], data, options);
-					if (widgetDefinition.getDataBySelection) {
-						this._bindSelectEvent(chartArea[0], widgetDefinition.widgetId, widgetDefinition, this);
-					} else {
-						this._bindChartEvents(chartArea[0], widgetDefinition.widgetId, widgetDefinition, this);
-					}
-				}
-
-			},
-			_bindSelectEvent : function(chartArea, widgetId, widgetDefinition, context) {
-				Flotr.EventAdapter.observe(chartArea, "flotr:select", function(area) {
-					var evtObj = {
-						selectedWidgetId : widgetId,
-						chartData : area
-					};
-					context._trigger("plotselected", null, evtObj);
-				});
-			},
-			_bindChartEvents : function(chartArea, widgetId, widgetDefinition, context) {
-
-				Flotr.EventAdapter.observe(chartArea, 'flotr:click', function(d) {
-					//only if a series is clicked dispatch a click event
-					if (d.index !== undefined && d.seriesIndex !== undefined) {
-						var evtObj = {};
-						evtObj.selectedWidgetId = widgetId;
-						evtObj.flotr2GeneratedData = d;
-						var widgetData = widgetDefinition.widgetContent.data;
-						var seriesData = widgetData[d.seriesIndex];
-						var selectedData;
-
-						if ($.isArray(seriesData)) {
-							selectedData = seriesData[d.index];
-						} else {
-							selectedData = seriesData;
-						}
-
-						evtObj.customData = {
-							index : d.index,
-							selectedIndex : d.seriesIndex,
-							seriesData : seriesData,
-							selectedData : selectedData
-						};
-						context._trigger("plotclicked", null, evtObj);
-					}
-				});
-
-			},
 			_removeWidgetFromWidgetDefinitions : function(widgetId) {
 				var widgetDefs = this.options.dashboardData;
 				for (var i in widgetDefs) {
@@ -380,7 +304,6 @@
 					this.options.dashboardData.unshift(widgetDefinition);
 					var widget = this._constructWidget(widgetDefinition);
 					this.element.prepend(widget);
-					this._renderChart(widgetDefinition);
 					this._renderTable(widgetDefinition);
 					this._trigger("stateChanged", null,  {
 							triggerAction: 'widgetAdded',
@@ -418,4 +341,3 @@
 		});
 
 	}));
-
