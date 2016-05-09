@@ -13,7 +13,6 @@
 	padding-top: 10px;
 	width: 100%;
 	height: 100%;
-	font-family : Helvetica Neue, Helvetica, Arial, sans-serif;
 	font-size : 13px;
 	/*overflow: auto;*/
 }
@@ -44,13 +43,14 @@
 
 /*dashboard widget header css*/
 .sDashboardWidgetHeader {
-	margin: 0.3em;
 	padding: 2px 0.2em 2px 1em;
 	cursor: move;
 	border: 0;
 	border-bottom: 1px solid #CBCBCB;
-	color: #000;
-	font-weight: bold;
+	color: #FFFFFF;
+	font-size: 19px;
+	background-color: #44759D;
+	margin: -1px;
 }
 
 /*dashboard widget content css*/
@@ -101,7 +101,7 @@
 }
 
 
-.dataTables_length, 
+.dataTables_length,
 .dataTables_info{
 	float:left;
 }
@@ -114,11 +114,8 @@
 
 /*dashboard chart view css*/
 .sDashboardChart {
-	/*	width: 200px;
-	 height: 180px;*/
-	width: 100%;
-	height: 95%;
-	/*	cursor: pointer;*/
+	width: 200px;
+	 height: 180px;
 }
 
 .sDashboardChartClickable {
@@ -132,7 +129,7 @@
 
 /*jquery sortable placeholder styles */
 .ui-sortable-placeholder {
-	border: 1px dotted black;
+	border: 1px dashed black;
 	visibility: visible !important;
 	height: 225px !important;
 	width: 375px !important;
@@ -142,7 +139,7 @@
 }
 
 li.ui-sortable-placeholder {
-	background-color: #FCEFA1;
+	background-color: #FFF7CA;
 }
 
 /*icons*/
@@ -152,45 +149,46 @@ li.ui-sortable-placeholder {
 	background: url('icon-sprite.PNG') no-repeat;
 	width: 20px;
 	height: 20px;
+	font-family: 'FontAwesome';
 }
 
 .sDashboard-icon:hover {
 	cursor: pointer;
 }
 
-.sDashboard-icon.sDashboard-circle-plus-icon {
-	background-position: -2px -3px;
+.sDashboard-icon.sDashboard-circle-plus-icon:before {
+	content: "\f065";
 }
-.sDashboard-icon.sDashboard-circle-minus-icon {
-	background-position: -2px -29px;
+.sDashboard-icon.sDashboard-circle-minus-icon:before {
+	content: "\f066";
 }
-.sDashboard-icon.sDashboard-circle-remove-icon {
-	background-position: -2px -55px;
-}
-
-.sDashboard-icon.sDashboard-plus-icon {
-	background-position: -3px -83px;
-}
-.sDashboard-icon.sDashboard-minus-icon {
-	background-position: -2px -109px;
-}
-.sDashboard-icon.sDashboard-remove-icon {
-	background-position: -3px -135px;
+.sDashboard-icon.sDashboard-circle-remove-icon:before {
+	content: "\f057";
 }
 
+.sDashboard-icon.sDashboard-plus-icon:before {
+	content: "\f065";
+}
+.sDashboard-icon.sDashboard-minus-icon:before {
+	content: "\f066";
+}
+.sDashboard-icon.sDashboard-remove-icon:before {
+	content: "\f057";
+}
 
-.sDashboard-icon.sDashboard-trash-icon {
-	background-position: -4px -159px;
+
+.sDashboard-icon.sDashboard-trash-icon:before {
+	content: "\f1f8";
 }
-.sDashboard-icon.sDashboard-refresh-icon {
-	background-position: -3px -186px;
+.sDashboard-icon.sDashboard-refresh-icon:before {
+content: "\f021";
 }
-.sDashboard-icon.sDashboard-maximize-icon {
-	background-position: -2px -212px;
+.sDashboard-icon.sDashboard-maximize-icon:before {
+content: "\f065";
 }
 
-.sDashboard-icon.sDashboard-minimize-icon {
-	background-position: -2px -236px;
+.sDashboard-icon.sDashboard-minimize-icon:before {
+content: "\f066";
 }
 
 /*clear fix*/
