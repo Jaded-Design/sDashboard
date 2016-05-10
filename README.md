@@ -29,6 +29,9 @@ sDashboard depends on the following libraries
 * Datatables (required for table widgets)
 * ~~~Flotr2 charts (required for charting widgets)~~~
 
+##Optional Dependencies 
+
+* Font Awesome Icons (for use with sDashboardFA.css)
 
 ## How to set up
 
