@@ -33,12 +33,17 @@
 	-webkit-transition: border-color 0.3s;
 	-moz-transition: border-color 0.3s;
 	transition: border-color 0.3s;
+	  border-radius: 2px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    backface-visibility: hidden;
 }
 .sDashboardWidget:hover {
 	border: 1px solid #AFAFAF;
 	-webkit-transition: border-color 0.3s;
 	-moz-transition: border-color 0.3s;
 	transition: border-color 0.3s;
+	      box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+
 }
 
 /*dashboard widget header css*/
