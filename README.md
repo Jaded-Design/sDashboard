@@ -15,9 +15,11 @@ sDashboard is a jQuery plugin that converts an array of objects into a dashboard
 Please be advised that other than this small change, there won't be active support on this fork unless others want to step up. This fork was made as a convenience to people who want to use sDashboards core functionality without Flotr. 
 
 
-##Demo
+##NEW Demo
 
-view an example at : [Link to example](http://modeln.github.com/sDashboard/example/ex.html)
+This new demo does not contain any charts but instead shows the new card styling and Font Awesome icons in lieu of png sprite.
+
+View an example at : [Link to example](http://jaded-design.github.io/sDashboard/demo/ex.html)
 
 
 ##Dependencies
